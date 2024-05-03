@@ -74,6 +74,12 @@ jobs:
             </details>
             *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
