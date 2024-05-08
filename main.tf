@@ -15,10 +15,27 @@ provider "aws" {
   region = "ap-southeast-1"
 }
 
-resource "aws_instance" "test_instance" {
-  ami           = "ami-0f74c08b8b5effa56"
-  instance_type = "t2.nano"
+# resource "aws_instance" "test_instance" {
+#   ami           = "ami-003c463c8207b4dfa"
+#   instance_type = "t2.medium"
+#   tags = {
+#     Name = "kafka-playground"
+#   }
+# }
+resource "aws_vpc" "main" {
+  cidr_block       = "10.0.0.0/16"
+  instance_tenancy = "default"
+
   tags = {
-    Name = "test_instance"
+    Name = "main"
+  }
+}
+
+resource "aws_subnet" "main" {
+  vpc_id     = aws_vpc.main.id
+  cidr_block = "10.0.1.0/24"
+
+  tags = {
+    Name = "Main"
   }
 }
