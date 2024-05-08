@@ -65,6 +65,13 @@ resource "aws_subnet" "subnet_ap_southeast_1a" {
   }
 }
 
+
+resource "aws_route_table_association" "route_table_subnet_association_ap_southeast_1a" {
+  subnet_id      = aws_subnet.subnet_ap_southeast_1a.id
+  route_table_id = aws_route_table.route_table.id
+}
+
+
 resource "aws_subnet" "subnet_ap_southeast_1b" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = "10.0.2.0/24"
@@ -74,6 +81,7 @@ resource "aws_subnet" "subnet_ap_southeast_1b" {
     Name = "kafka-playground"
   }
 }
+
 
 resource "aws_subnet" "subnet_ap_southeast_1c" {
   vpc_id            = aws_vpc.vpc.id
