@@ -22,7 +22,7 @@ provider "aws" {
 #     Name = "kafka-playground"
 #   }
 # }
-resource "aws_vpc" "main" {
+resource "aws_vpc" "vpc" {
   cidr_block       = "10.0.0.0/16"
   instance_tenancy = "default"
 
@@ -31,8 +31,37 @@ resource "aws_vpc" "main" {
   }
 }
 
+
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.vpc.id
+
+  tags = {
+    Name = "kafka-playground"
+  }
+}
+
+
+resource "aws_route_table" "example" {
+  vpc_id = aws_vpc.vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+
+  route {
+    ipv6_cidr_block        = "::/0"
+    egress_only_gateway_id = aws_egress_only_internet_gateway.igw.id
+  }
+
+  tags = {
+    Name = "kafka-playground"
+  }
+}
+
+
 resource "aws_subnet" "subnet_ap_southeast_1a" {
-  vpc_id            = aws_vpc.main.id
+  vpc_id            = aws_vpc.vpc.id
   cidr_block        = "10.0.1.0/24"
   availability_zone = "ap-southeast-1a"
 
@@ -42,9 +71,19 @@ resource "aws_subnet" "subnet_ap_southeast_1a" {
 }
 
 resource "aws_subnet" "subnet_ap_southeast_1b" {
-  vpc_id            = aws_vpc.main.id
+  vpc_id            = aws_vpc.vpc.id
   cidr_block        = "10.0.2.0/24"
   availability_zone = "ap-southeast-1b"
+
+  tags = {
+    Name = "kafka-playground"
+  }
+}
+
+resource "aws_subnet" "subnet_ap_southeast_1c" {
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = "10.0.3.0/24"
+  availability_zone = "ap-southeast-1c"
 
   tags = {
     Name = "kafka-playground"
