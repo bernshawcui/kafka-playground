@@ -113,6 +113,17 @@ resource "aws_security_group" "allow_web_traffic" {
 }
 
 
+resource "aws_network_interface" "webserver_nic" {
+  subnet_id       = aws_subnet.subnet_ap_southeast_1a.id
+  private_ips     = ["10.0.1.50"]
+  security_groups = [aws_security_group.allow_web_traffic.id]
+
+  # attachment {
+  #   instance     = aws_instance.test.id
+  #   device_index = 1
+  # }
+}
+
 resource "aws_subnet" "subnet_ap_southeast_1b" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = "10.0.2.0/24"
