@@ -23,19 +23,30 @@ provider "aws" {
 #   }
 # }
 resource "aws_vpc" "main" {
-  cidr_block       = "10.0.0.0/16"
+  cidr_block       = "238.0.0.0/16"
   instance_tenancy = "default"
 
   tags = {
-    Name = "main"
+    Name = "kafka-playground"
   }
 }
 
 resource "aws_subnet" "main" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.1.0/24"
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "238.0.1.0/24"
+  availability_zone = "ap-southeast-1a"
 
   tags = {
-    Name = "Main"
+    Name = "kafka-playground"
+  }
+}
+
+resource "aws_subnet" "main" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "238.0.2.0/24"
+  availability_zone = "ap-southeast-1b"
+
+  tags = {
+    Name = "kafka-playground"
   }
 }
