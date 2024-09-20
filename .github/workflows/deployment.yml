@@ -11,6 +11,7 @@ on:
 
 env:
   # verbosity setting for Terraform logs
+  # test
   TF_LOG: INFO
   # Credentials for deployment to AWS
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
